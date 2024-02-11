@@ -1,7 +1,9 @@
 import { Add } from "@mui/icons-material";
 import {
+    Alert,
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -9,6 +11,7 @@ import {
     useTheme,
 } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { initialFeedback } from "../../../hooks/useUploadTemplate";
 import { ProjectService } from "../../../services/ProjectService";
 
 const project = { title: "", background: "", objective: "" };
@@ -18,6 +21,7 @@ type TCreateProjectProps = { onSuccess?: () => void };
 function CreateProject({ onSuccess }: TCreateProjectProps) {
     const [showForm, setShowForm] = useState(false);
     const [newProject, setNewProject] = useState(project);
+    const [feedback, setFeedback] = useState(initialFeedback);
     //
     const theme = useTheme();
 
@@ -34,14 +38,30 @@ function CreateProject({ onSuccess }: TCreateProjectProps) {
     async function handlecreateProject(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        setFeedback((f) => ({ ...f, loading: true }));
+
         const { entity, successMessage, errMessage } =
             await ProjectService.getInstance().createProject(newProject);
 
         if (entity.isSome()) {
             console.log(successMessage);
+
+            setFeedback({
+                loading: false,
+                messege: "",
+                severity: "success",
+                show: true,
+            });
+
             onSuccess && onSuccess();
         } else {
             console.log(errMessage);
+            setFeedback({
+                loading: false,
+                messege: "",
+                severity: "error",
+                show: true,
+            });
         }
     }
 
@@ -60,6 +80,15 @@ function CreateProject({ onSuccess }: TCreateProjectProps) {
                 <DialogTitle>Create Project</DialogTitle>
 
                 <DialogContent>
+                    {feedback.show && (
+                        <Alert
+                            sx={{ mb: 2 }}
+                            onClose={() => setFeedback(initialFeedback)}
+                        >
+                            {feedback.messege}
+                        </Alert>
+                    )}
+
                     <form
                         onSubmit={handlecreateProject}
                         style={{
@@ -114,8 +143,16 @@ function CreateProject({ onSuccess }: TCreateProjectProps) {
                                 sx={{ flex: 1 }}
                                 type="submit"
                                 disableElevation
+                                disabled={feedback.loading}
+                                startIcon={
+                                    feedback.loading && (
+                                        <CircularProgress
+                                            size={theme.spacing(2)}
+                                        />
+                                    )
+                                }
                             >
-                                create
+                                {feedback.loading ? "creating..." : "create"}
                             </Button>
                         </Box>
                     </form>
