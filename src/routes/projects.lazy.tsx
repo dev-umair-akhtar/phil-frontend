@@ -23,6 +23,7 @@ export const Route = createLazyFileRoute("/projects")({
 
 function ProjectsPage() {
     const [feedback, setFeedback] = useState(initialFeedback);
+    const [refetchCount, setRefetchCount] = useState(0);
 
     //
     const theme = useTheme();
@@ -117,9 +118,14 @@ function ProjectsPage() {
                                     : "upload"}
                         </Button>
 
-                        <CreateProject />
+                        <CreateProject
+                            onSuccess={() => {
+                                setRefetchCount((count) => count + 1);
+                            }}
+                        />
                     </Box>,
                 ]}
+                updatingAgents={[refetchCount]}
             />
 
             <Snackbar

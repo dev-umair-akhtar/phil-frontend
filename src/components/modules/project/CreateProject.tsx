@@ -13,7 +13,9 @@ import { ProjectService } from "../../../services/ProjectService";
 
 const project = { title: "", background: "", objective: "" };
 
-function CreateProject() {
+type TCreateProjectProps = { onSuccess?: () => void };
+
+function CreateProject({ onSuccess }: TCreateProjectProps) {
     const [showForm, setShowForm] = useState(false);
     const [newProject, setNewProject] = useState(project);
     //
@@ -32,10 +34,15 @@ function CreateProject() {
     async function handlecreateProject(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const res =
+        const { entity, successMessage, errMessage } =
             await ProjectService.getInstance().createProject(newProject);
 
-        console.log(res);
+        if (entity.isSome()) {
+            console.log(successMessage);
+            onSuccess && onSuccess();
+        } else {
+            console.log(errMessage);
+        }
     }
 
     return (
