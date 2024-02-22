@@ -19,6 +19,7 @@ import { Route as rootRoute } from './routes/__root'
 const LoginLazyImport = createFileRoute('/login')()
 const IndexLazyImport = createFileRoute('/')()
 const ProjectIndexLazyImport = createFileRoute('/project/')()
+const ProjectImportLazyImport = createFileRoute('/project/import')()
 const ProjectCreateLazyImport = createFileRoute('/project/create')()
 
 // Create/Update Routes
@@ -37,6 +38,13 @@ const ProjectIndexLazyRoute = ProjectIndexLazyImport.update({
   path: '/project/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/project/index.lazy').then((d) => d.Route))
+
+const ProjectImportLazyRoute = ProjectImportLazyImport.update({
+  path: '/project/import',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/project/import.lazy').then((d) => d.Route),
+)
 
 const ProjectCreateLazyRoute = ProjectCreateLazyImport.update({
   path: '/project/create',
@@ -61,6 +69,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectCreateLazyImport
       parentRoute: typeof rootRoute
     }
+    '/project/import': {
+      preLoaderRoute: typeof ProjectImportLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/project/': {
       preLoaderRoute: typeof ProjectIndexLazyImport
       parentRoute: typeof rootRoute
@@ -74,6 +86,7 @@ export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   LoginLazyRoute,
   ProjectCreateLazyRoute,
+  ProjectImportLazyRoute,
   ProjectIndexLazyRoute,
 ])
 

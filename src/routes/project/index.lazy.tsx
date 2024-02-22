@@ -8,7 +8,7 @@ import {
     useTheme,
 } from "@mui/material";
 import { Link, createLazyFileRoute } from "@tanstack/react-router";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import References from "../../components/References/References";
 import { RUDTable } from "../../components/Table/RUDTable";
 import Dashboard from "../../components/layout/Dashboard";
@@ -60,152 +60,6 @@ function ProjectsPage() {
             });
         }
     }
-
-    //
-    // function generateTableDoc() {
-    //     // Add a table
-    //     const table = new Table({
-    //         columnWidths: [3505, 5505],
-    //         rows: [
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 3505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [new Paragraph("Hello")],
-    //                     }),
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 5505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [],
-    //                     }),
-    //                 ],
-    //             }),
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 3505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [],
-    //                     }),
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 5505,
-    //                             type: WidthType.AUTO,
-    //                         },
-    //                         children: [new Paragraph("World")],
-    //                     }),
-    //                 ],
-    //             }),
-    //         ],
-    //     });
-
-    //     const table2 = new Table({
-    //         columnWidths: [45050, 45050],
-    //         rows: [
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 4505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [new Paragraph("Hello")],
-    //                     }),
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 4505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [],
-    //                     }),
-    //                 ],
-    //             }),
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 4505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [],
-    //                     }),
-    //                     new TableCell({
-    //                         width: {
-    //                             size: 4505,
-    //                             type: WidthType.DXA,
-    //                         },
-    //                         children: [new Paragraph("World")],
-    //                     }),
-    //                 ],
-    //             }),
-    //         ],
-    //     });
-
-    //     const table3 = new Table({
-    //         rows: [
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         children: [new Paragraph("Hello")],
-    //                     }),
-    //                     new TableCell({
-    //                         children: [],
-    //                     }),
-    //                 ],
-    //             }),
-    //             new TableRow({
-    //                 children: [
-    //                     new TableCell({
-    //                         children: [],
-    //                     }),
-    //                     new TableCell({
-    //                         children: [new Paragraph("World")],
-    //                     }),
-    //                 ],
-    //             }),
-    //         ],
-    //     });
-
-    //     // Create a new Document
-    //     const doc = new Document({
-    //         sections: [
-    //             { properties: {}, children: [new Paragraph("Simple Table")] },
-    //             {
-    //                 properties: {},
-    //                 children: [table, table2, table3],
-    //             },
-    //         ],
-    //     });
-
-    //     // Save the document
-    //     const fileName = "simple_table.docx";
-    //     Packer.toBlob(doc).then((blob) => {
-    //         const url = window.URL.createObjectURL(blob);
-
-    //         // Create a link element and trigger the download
-    //         const link = document.createElement("a");
-    //         link.href = url;
-    //         link.download = fileName;
-    //         document.body.appendChild(link);
-    //         link.click();
-
-    //         // Clean up
-    //         document.body.removeChild(link);
-    //         window.URL.revokeObjectURL(url);
-    //     });
-    // }
-
-    //
-    useEffect(() => {
-        // generateTableDoc();
-    }, []);
 
     return (
         <Dashboard title="Projects">
@@ -263,6 +117,10 @@ function ProjectsPage() {
                                     : "upload"}
                         </Button>
 
+                        <Link to="/project/import">
+                            <Button variant="outlined">import Projects</Button>
+                        </Link>
+
                         <Link to="/project/create">
                             <Button
                                 disableElevation
@@ -270,7 +128,7 @@ function ProjectsPage() {
                                 variant="contained"
                             >
                                 create project
-                            </Button>{" "}
+                            </Button>
                         </Link>
                     </Box>,
                 ]}
