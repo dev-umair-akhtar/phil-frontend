@@ -16,16 +16,12 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
-const ProjectsLazyImport = createFileRoute('/projects')()
 const LoginLazyImport = createFileRoute('/login')()
 const IndexLazyImport = createFileRoute('/')()
+const ProjectIndexLazyImport = createFileRoute('/project/')()
+const ProjectCreateLazyImport = createFileRoute('/project/create')()
 
 // Create/Update Routes
-
-const ProjectsLazyRoute = ProjectsLazyImport.update({
-  path: '/projects',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/projects.lazy').then((d) => d.Route))
 
 const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
@@ -36,6 +32,18 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ProjectIndexLazyRoute = ProjectIndexLazyImport.update({
+  path: '/project/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/project/index.lazy').then((d) => d.Route))
+
+const ProjectCreateLazyRoute = ProjectCreateLazyImport.update({
+  path: '/project/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/project/create.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -49,8 +57,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/projects': {
-      preLoaderRoute: typeof ProjectsLazyImport
+    '/project/create': {
+      preLoaderRoute: typeof ProjectCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/project/': {
+      preLoaderRoute: typeof ProjectIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -61,7 +73,8 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   LoginLazyRoute,
-  ProjectsLazyRoute,
+  ProjectCreateLazyRoute,
+  ProjectIndexLazyRoute,
 ])
 
 /* prettier-ignore-end */

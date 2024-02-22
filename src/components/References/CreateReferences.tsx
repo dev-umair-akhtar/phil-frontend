@@ -5,28 +5,18 @@ type TCreateReferencesProps = { project: TProjectRow; templates: string[] };
 
 function CreateReferences({ project, templates }: TCreateReferencesProps) {
     async function getFiles(temps: string[]) {
-        const files: File[] = [];
+        const files: Blob[] = [];
 
-        let index = 0;
+        // let index = 0;
 
         for (const url of temps) {
-            const file = await fetch(url)
-                .then((res) => res.blob())
-                .then((blob) => {
-                    const _file = new File([blob], "template-" + ++index, {
-                        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    });
+            const blob = await fetch(url).then((res) => res.blob());
 
-                    console.log(_file);
-
-                    return _file;
-                });
-
-            files.push(file);
+            files.push(blob);
         }
 
-        for (const file of files) {
-            patchDocument(file, {
+        for (const blob of files) {
+            patchDocument(blob, {
                 patches: {
                     reference_title: {
                         type: "paragraph",
@@ -41,6 +31,7 @@ function CreateReferences({ project, templates }: TCreateReferencesProps) {
                         children: [new Paragraph(project.objective)],
                     },
                 },
+                keepOriginalStyles: true,
             }).then((doc) => {
                 const blob = new Blob([doc], {
                     type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -48,6 +39,7 @@ function CreateReferences({ project, templates }: TCreateReferencesProps) {
 
                 const file = new File([blob], "asdf.docx", {
                     type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                    endings: "native",
                 });
 
                 window.open(URL.createObjectURL(file), "_blank");

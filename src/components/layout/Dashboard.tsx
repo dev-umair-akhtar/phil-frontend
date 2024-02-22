@@ -13,7 +13,6 @@ function Dashboard({ children, title }: TDashboardProps) {
     //
 
     return (
-        // <Authenti
         <DashboardContext.Provider
             value={{ open, setOpen, pageTitle, setPageTitle }}
         >
