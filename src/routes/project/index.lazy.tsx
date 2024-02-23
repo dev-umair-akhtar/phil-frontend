@@ -1,4 +1,4 @@
-import { Close, Done, Upload } from "@mui/icons-material";
+import { Add, Close, Done, Upload } from "@mui/icons-material";
 import {
     Alert,
     Box,
@@ -7,17 +7,16 @@ import {
     Snackbar,
     useTheme,
 } from "@mui/material";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { Link, createLazyFileRoute } from "@tanstack/react-router";
 import { ChangeEvent, useRef, useState } from "react";
-import References from "../components/References/References";
-import { RUDTable } from "../components/Table/RUDTable";
-import Dashboard from "../components/layout/Dashboard";
-import CreateProject from "../components/modules/project/CreateProject";
-import { initialFeedback } from "../hooks/useUploadTemplate";
-import { ProjectService, TProjectRow } from "../services/ProjectService";
-import { S3Service } from "../services/S3Service";
+import References from "../../components/References/References";
+import { RUDTable } from "../../components/Table/RUDTable";
+import Dashboard from "../../components/layout/Dashboard";
+import { initialFeedback } from "../../hooks/useUploadTemplate";
+import { ProjectService, TProjectRow } from "../../services/ProjectService";
+import { S3Service } from "../../services/S3Service";
 
-export const Route = createLazyFileRoute("/projects")({
+export const Route = createLazyFileRoute("/project/")({
     component: ProjectsPage,
 });
 
@@ -118,11 +117,19 @@ function ProjectsPage() {
                                     : "upload"}
                         </Button>
 
-                        <CreateProject
-                            onSuccess={() => {
-                                setRefetchCount((count) => count + 1);
-                            }}
-                        />
+                        <Link to="/project/import">
+                            <Button variant="outlined">import Projects</Button>
+                        </Link>
+
+                        <Link to="/project/create">
+                            <Button
+                                disableElevation
+                                startIcon={<Add />}
+                                variant="contained"
+                            >
+                                create project
+                            </Button>
+                        </Link>
                     </Box>,
                 ]}
                 updatingAgents={[refetchCount]}

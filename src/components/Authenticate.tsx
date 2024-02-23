@@ -12,13 +12,13 @@ export default function Authenticate({ children }: TAuthenticateProps) {
     const { setUser } = useContext(UserContext);
 
     const loginOrRedirect = async () => {
-        const [data, err] = await UserService.getInstance().login({
+        const res = await UserService.getInstance().login({
             username: "",
             password: "",
         });
 
-        if (data?.user) {
-            setUser(data.user);
+        if (res.entity.isSome()) {
+            setUser(res.entity as any);
             if (router.location.pathname === "/") {
                 Navigate({ to: `/` });
             } else {

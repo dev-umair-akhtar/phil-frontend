@@ -13,7 +13,6 @@ function CreateReferences({ project, templates }: TCreateReferencesProps) {
         }
 
     } 
-
     return (
         <Button
             variant="contained"

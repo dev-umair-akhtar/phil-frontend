@@ -22,7 +22,7 @@ export type TModule = {
     icon?: ReactNode;
 };
 
-const modules: TModule[] = [{ id: 1, label: "Projects", url: "/projects" }];
+const modules: TModule[] = [{ id: 1, label: "Projects", url: "/project" }];
 
 function Sidebar() {
     //
