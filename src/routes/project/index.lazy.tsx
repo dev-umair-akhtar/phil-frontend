@@ -72,7 +72,7 @@ function ProjectsPage() {
             />
 
             <RUDTable
-                getter={() => ProjectService.getInstance().readProjects()}
+                getter={(page, limit) => ProjectService.getInstance().readProjects(page,limit)}
                 readables={{
                     id: "id",
                     title: "Title",
