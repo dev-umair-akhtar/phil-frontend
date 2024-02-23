@@ -42,9 +42,8 @@ const References = ({ project }: TAssignTemplateProps) => {
         });
     }
 
-    //
     async function getTemplates() {
-        const keys = ["templates/template-1"];
+        const keys = ["templates/template-3", "templates/template-4"];
 
         const promises = keys.map((key) => S3Service.getS3ByKey(key));
 
