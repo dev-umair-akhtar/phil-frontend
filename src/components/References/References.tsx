@@ -104,7 +104,7 @@ const References = ({ project }: TAssignTemplateProps) => {
                                         >
                                             <CardContent>
                                                 <Typography>
-                                                    Template {index + 1}
+                                                    Template {parseInt(index) + 1}
                                                 </Typography>
                                             </CardContent>
                                         </CardActionArea>

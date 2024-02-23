@@ -19,10 +19,12 @@ export class WordService {
 
         console.log(project);
 
-        const replacedDoc = this.replacePlaceholders(documentString, project);
-        // let replacedDoc = documentString.replace("{{title}}", project.title)
-        // let replacedDoc = documentString.replace("${objective}", project.objective)
-        // replacedDoc = replacedDoc.replace("${background}", project.background)
+        // const replacedDoc = this.replacePlaceholders(documentString, project);
+        let replacedDoc = documentString.replace("<w:t>title</w:t>", `<w:t>${project.title}</w:t>`)
+        // replacedDoc = replacedDoc.replace("<w:t>objective</w:t>", `<w:t>${project.objective ?? ""}</w:t>`)
+        // replacedDoc = replacedDoc.replace("<w:t>background</w:t>", `<w:t>${project.background}</w:t>`)
+        replacedDoc = replacedDoc.replace("<w:t>endDate</w:t>", `<w:t>${project.endDate ?? "Unknown"}</w:t>`)
+        replacedDoc = replacedDoc.replace("<w:t>totalCalculatedProjectValueEUR</w:t>", `<w:t>${project.totalCalculatedProjectValueEUR ?? "Unknow"}</w:t>`)
         console.log(replacedDoc);
 
         zip.file("word/document.xml", replacedDoc);
@@ -40,8 +42,8 @@ export class WordService {
 
     private replacePlaceholders(input: string, data: any) {
         // Regular expression to match placeholders in the format {{key}}
-        // const regex = /{{\s*([a-z]*?)\s*}}/g
-        const regex = /\*\*(.*?)\*\*/g
+        const regex = /{{([a-z]*?)}}/g
+        // const regex = /\*\*(.*?)\*\*/g
 
         // Replace each placeholder with the corresponding value from the object
         return input.replace(regex, (match, key) => {
@@ -50,7 +52,7 @@ export class WordService {
             key = key.trim();
 
             // If the key exists in the object, return its value; otherwise, return the original placeholder
-            return data.hasOwnProperty(key) ? data[key]?.toString() ?? '' : '';
+            return data.hasOwnProperty(key) ? data[key]?.toString() ?? '' : match;
         });
     }
 
